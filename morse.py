@@ -13,16 +13,21 @@ sampleRate = 44100
 freq = 530
 
 
-MORSE = {'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
-                    'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
-                    'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
-                    'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
-                    '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'}
+MORSE = {'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
+         'F': '..-.', 'G': '--.', 'H': '....',
+         'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 
+         'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+         'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 
+         'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+         'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', 
+         '2': '..---', '3': '...--', '4': '....-',
+         '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'}
 
 TIME_BETWEEN = 0.1
 
 def play_sound(line=True):
-    arr = numpy.array([4096 * numpy.sin(2.0 * numpy.pi * freq * x / sampleRate) for x in range(0, sampleRate)]).astype(numpy.int16)
+    arr = numpy.array([4096 * numpy.sin(2.0 * numpy.pi * freq * x / sampleRate)
+                       for x in range(0, sampleRate)]).astype(numpy.int16)
     arr2 = numpy.c_[arr,arr]
     sound = pygame.sndarray.make_sound(arr2)
     sound.play(-1)
@@ -30,28 +35,27 @@ def play_sound(line=True):
         pygame.time.delay(300)
     else:
         pygame.time.delay(100)
-
     sound.stop()
 
     
-def verify(string):
+def can_translate(character):
     keys = list(MORSE.keys())
-    for char in string:
+    for char in character:
         if char not in keys and char != " ":
-            print(f"The character {char} cannot be translated.")
+            print(f"Can not use {char}.")
             raise SystemExit
 
 
-def main():
+def init():
     while True:
         print("\nEnter message: ")
         message = input("> ").upper()
-        verify(message)
+        can_translate(message)
         pygame.init()
         message_morse = []
         for char in message:
             if char == " ":
-                print(" " * 3, end=" ")
+                print(" " * 4, end=" ")
                 time.sleep(7 * TIME_BETWEEN)
             else:
                 message_morse.append(MORSE[char])
@@ -67,4 +71,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    init()
